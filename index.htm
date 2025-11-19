@@ -21,7 +21,7 @@
 
 <a-entity mindar-image-target="targetIndex: 0">
   
-<a-entity scale="0.02 0.02 0.02" position="0 0 0">
+<a-entity id="modelWrapper" scale="0.02 0.02 0.02" position="0 0 0">
   
     <a-gltf-model 
       src="#myModel" 
@@ -38,5 +38,47 @@
         ...
       </div>
     </div>
+      
+  <script>
+    function rotateModel(direction) {
+        // 1. Get the model entity using the ID
+        const model = document.querySelector('#modelWrapper');
+        
+        if (!model) {
+            console.error('Model entity not found!');
+            return;
+        }
+
+        // 2. Get the current rotation object
+        const currentRotation = model.getAttribute('rotation');
+        const step = 15; // Rotation step in degrees
+
+        // 3. Calculate the new Y-axis rotation (Yaw/Spin)
+        // Ensure rotation wraps around from 360 to 0
+        let newY = (currentRotation.y + (direction * step)) % 360;
+
+        // 4. Set the new rotation attributes
+        // Use the existing X and Z rotation values
+        model.setAttribute('rotation', {
+            x: currentRotation.x,
+            y: newY,
+            z: currentRotation.z
+        });
+    }
+</script>
+      
+  <div style="position: fixed; bottom: 20px; width: 100%; text-align: center; z-index: 100;">
+        <button 
+            onclick="rotateModel(-1)" 
+            style="padding: 10px 20px; font-size: 18px; margin-right: 10px; background-color: #f0f0f0; border: none; border-radius: 5px;">
+            ⟲ Rotate Left
+        </button>
+        <button 
+            onclick="rotateModel(1)" 
+            style="padding: 10px 20px; font-size: 18px; background-color: #f0f0f0; border: none; border-radius: 5px;">
+            ⟳ Rotate Right
+        </button>
+    </div>
+      
   </body>
 </html>
