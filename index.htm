@@ -40,43 +40,59 @@
     </div>
       
   <script>
-    function rotateModel(direction) {
-        // 1. Get the model entity using the ID
-        const model = document.querySelector('#modelWrapper');
-        
-        if (!model) {
-            console.error('Model entity not found!');
-            return;
+    let rotationInterval = null; // Stores the ID of the interval loop
+    const step = 5; // Smaller step (5 degrees) for smoother continuous rotation
+
+    function rotateModelStart(direction) {
+        // Clear any existing rotation loop to prevent multiple loops running
+        if (rotationInterval) {
+            clearInterval(rotationInterval);
         }
 
-        // 2. Get the current rotation object
-        const currentRotation = model.getAttribute('rotation');
-        const step = 15; // Rotation step in degrees
+        // Start a new rotation loop that runs every 50 milliseconds
+        rotationInterval = setInterval(() => {
+            const model = document.querySelector('#modelWrapper');
+            if (!model) return;
 
-        // 3. Calculate the new Y-axis rotation (Yaw/Spin)
-        // Ensure rotation wraps around from 360 to 0
-        let newY = (currentRotation.y + (direction * step)) % 360;
+            const currentRotation = model.getAttribute('rotation');
+            
+            // Calculate new rotation, allowing for continuous rotation beyond 360
+            let newY = currentRotation.y + (direction * step);
 
-        // 4. Set the new rotation attributes
-        // Use the existing X and Z rotation values
-        model.setAttribute('rotation', {
-            x: currentRotation.x,
-            y: newY,
-            z: currentRotation.z
-        });
+            // Update the rotation attribute
+            model.setAttribute('rotation', {
+                x: currentRotation.x,
+                y: newY,
+                z: currentRotation.z
+            });
+        }, 50); // The 50ms interval determines the speed/smoothness
+    }
+
+    function rotateModelStop() {
+        // Stop the rotation loop when the mouse button/touch is released
+        if (rotationInterval) {
+            clearInterval(rotationInterval);
+            rotationInterval = null;
+        }
     }
 </script>
       
-  <div style="position: fixed; bottom: 20px; width: 100%; text-align: center; z-index: 100;">
+<div style="position: fixed; bottom: 20px; width: 100%; text-align: center; z-index: 100;">
         <button 
-            onclick="rotateModel(-1)" 
+            onmousedown="rotateModelStart(-1)" 
+            onmouseup="rotateModelStop()"
+            ontouchstart="rotateModelStart(-1)"
+            ontouchend="rotateModelStop()"
             style="padding: 10px 20px; font-size: 18px; margin-right: 10px; background-color: #f0f0f0; border: none; border-radius: 5px;">
-            ⟲ Rotate Left
+            ⟲ Hold to Rotate Left
         </button>
         <button 
-            onclick="rotateModel(1)" 
+            onmousedown="rotateModelStart(1)" 
+            onmouseup="rotateModelStop()"
+            ontouchstart="rotateModelStart(1)"
+            ontouchend="rotateModelStop()"
             style="padding: 10px 20px; font-size: 18px; background-color: #f0f0f0; border: none; border-radius: 5px;">
-            ⟳ Rotate Right
+            ⟳ Hold to Rotate Right
         </button>
     </div>
       
