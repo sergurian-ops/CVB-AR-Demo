@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.2.0/dist/aframe-extras.min.js"></script>  </head>
+    #<script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.2.0/dist/aframe-extras.min.js"></script>  </head>
   <body>
     <a-scene 
       mindar-image="imageTargetSrc: ./assets/targets.mind; uiScanning: #scanning-overlay;" 
@@ -21,17 +21,13 @@
 
 <a-entity mindar-image-target="targetIndex: 0">
   
-<a-entity 
-    scale="0.02 0.02 0.02" 
-    position="0 0 0" 
-    drag-rotate-component>
-    
+<a-entity scale="0.02 0.02 0.02" position="0 0 0">
+  
     <a-gltf-model 
-      id="myModel" 
       src="#myModel" 
       rotation="0 0 0" 
-      position="0 0 0">
-    </a-gltf-model>
+      position="0 0 0"> 
+      </a-gltf-model>
 
   </a-entity>
 </a-entity>
